@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename = 'styles/style.css') }}"
+    />
+    <title>Prediction</title>
+  </head>
+  <body>
+    <h1 id="title" class="page-title">Predicted Objects</h1>
+
+    <div class="container">
+      <img id="file" width=340 accept="image/*" src="{{ url_for('static', filename=filePath) }}" />
+      <div class="img-area" data-img="">
+        <i class="bx bxs-cloud-upload icon"></i>
+        <h3>Upload Image</h3>
+        <p>Image size must be less than <span>10MB</span></p>
+      </div>
+      <form method='POST' enctype='multipart/form-data'>
+        {{form.hidden_tag()}}
+        {{form.file(class="select-img")}}
+        {{form.submit(class_="submit-image", value="Detect")}}
+    </form>
+    </div>
+
+    <script>
+      const selectImage = document.querySelector(".select-img");
+      var data
+      selectImage.addEventListener("change", function (event) {
+        var image = document.getElementById('file');
+	      image.src = URL.createObjectURL(event.target.files[0]);
+        document.getElementById("title").innerHTML = "Visual Pollution Detection";
+      });
+
+      var img = document.getElementById('file');
+        img.crossOrigin = 'Anonymous';
+        img.onload = function(){
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+            canvas.height = this.naturalHeight;
+            canvas.width = this.naturalWidth;
+            ctx.drawImage(this,0,0);
+            data = canvas.toDataURL('image/jpeg');
+            const element = document.querySelector(".img-area");
+            element.remove();
+        };
+    </script>
+  </body>
+</html>
