@@ -16,11 +16,10 @@ def find_model():
     for f  in os.listdir():
         if f.endswith(".pt"):
             return f
-    print("Please make sure that weigth file in project directory!")
+    print("Please make sure that your model file in project directory!")
     
 model_name = find_model()
-model =torch.hub.load("WongKinYiu/yolov7", 'custom', model_name)
-
+model = torch.hub.load("WongKinYiu/yolov7", 'custom', model_name)
 model.eval()
 
 def get_prediction(img_bytes):
